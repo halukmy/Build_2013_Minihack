@@ -3,7 +3,7 @@ Build_2013_Minihack
 
 ### Quickstart project for //BUILD/2013 Minihack
 
-#### Check out the full quickstart document [here](https://github.com/BuddyPlatform/Build_2013_Minihack/wiki/Buddy-Platform-Quickstart).
+#### Check out the full quickstart document [here](https://github.com/BuddyPlatform/Build_2013_Minihack/wiki/BUILD-2013---Buddy-Platform-Quickstart).
 
 
 ## License
