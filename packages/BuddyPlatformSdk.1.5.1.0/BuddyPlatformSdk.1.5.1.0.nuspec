@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>BuddyPlatformSdk</id>
+    <version>1.5.1.0</version>
+    <title>BuddyPlatformSdk</title>
+    <authors>Buddy Platform,  Inc.</authors>
+    <owners>Buddy Platform,  Inc.</owners>
+    <projectUrl>http://buddy.com/developers</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Buddy Platform is an incredibly rich platform of APIs designed to support end-to-end scenarios. While many cloud products employ "feature-based engineering", Buddy is a "scenario-engineered" product. That means we offer APIs designed to solve for complete scenarios, rather than individual features like generic hosted databases or storage.</description>
+    <summary>Buddy Platform SDK for .NET</summary>
+    <releaseNotes />
+    <copyright />
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="Newtonsoft.Json" />
+      </group>
+      <group targetFramework="WindowsPhone7.1">
+        <dependency id="Newtonsoft.Json" version="4.5" />
+        <dependency id="Microsoft.Bcl" />
+      </group>
+      <group targetFramework="WindowsPhone8.0">
+        <dependency id="Newtonsoft.Json" version="4.5" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
