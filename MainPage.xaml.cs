@@ -18,6 +18,7 @@ using Facebook;
 using Windows.Security.Authentication.Web;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Popups;
 
 
 
@@ -123,17 +124,24 @@ namespace BuildAppWalkthrough
             this.InitializeComponent();
         }
 
-      
-        private async void FinishLogin(AuthenticatedUser user)
+
+        private async void FinishLogin(AuthenticatedUser user, string message)
         {
-            
+            if (message != null)
+            {
+
+                MessageDialog md = new MessageDialog(message);
+                await md.ShowAsync();
+                return;
+            }
+
             // hide login UI
             LoginContainer.Visibility = Visibility.Collapsed;
-            
+
             // show and populate the info box
             Profile.Visibility = Visibility.Visible;
             ProfileName.Text = user.Name;
-            
+
             // show profile photo if available.
             if (user.ProfilePicture != null)
             {
@@ -152,17 +160,51 @@ namespace BuildAppWalkthrough
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            var user = await client.LoginAsync(Username.Text, Password.Password);
-            FinishLogin(user);
+            if (String.IsNullOrWhiteSpace(Username.Text) || String.IsNullOrWhiteSpace(Password.Password)) return;
+            string msg = null;
+            AuthenticatedUser user = null;
+            try
+            {
+                user = await client.LoginAsync(Username.Text, Password.Password);
+            }
+            catch (BuddyServiceException ex)
+            {
+                if (ex.Error == "SecurityFailedBadUserName")
+                {
+                    msg = "Unknown username or password.";
+
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+            FinishLogin(user, msg);
         }
 
         private async void SignupButton_Click(object sender, RoutedEventArgs e)
         {
-            var name = Username.Text;
-            var pass = Password.Password;
-
-            var user = await client.CreateUserAsync(name, pass);
-            FinishLogin(user);
+            if (String.IsNullOrWhiteSpace(Username.Text) || String.IsNullOrWhiteSpace(Password.Password)) return;
+            string msg = null;
+            AuthenticatedUser user = null;
+            try
+            {
+                user = await client.CreateUserAsync(Username.Text, Password.Password);
+            }
+            catch (BuddyServiceException ex)
+            {
+                if (ex.Error == "UserNameAlreadyInUse")
+                {
+                    msg = "Username already taken, please choose another.";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            FinishLogin(user, msg);
         }
 
         private async void SocialLoginButton_Click(object sender, RoutedEventArgs e)
@@ -172,8 +214,20 @@ namespace BuildAppWalkthrough
             {
                 return;
             }
-            AuthenticatedUser user = await client.SocialLoginAsync(creds.ProviderType, creds.ID, creds.AccessToken);
-            FinishLogin(user);
+            string message = null;
+            AuthenticatedUser user = null;
+            try
+            {
+                user = await client.SocialLoginAsync(creds.ProviderType, creds.ID, creds.AccessToken);
+            }
+            catch (BuddyServiceException ex)
+            {
+                if (ex.Error == "AccessTokenInvalidOrProviderIDDoesNotMatch")
+                {
+                    message = "Error from login provider.";
+                }
+            }
+            FinishLogin(user, message);
         }
 
 
